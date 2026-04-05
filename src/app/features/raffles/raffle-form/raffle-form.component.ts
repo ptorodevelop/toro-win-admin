@@ -11,90 +11,97 @@ import { environment } from '../../../../environments/environment';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, RouterLink],
   template: `
-    <div class="space-y-6 max-w-3xl mx-auto">
+    <div class="space-y-8 max-w-4xl mx-auto">
       <div class="flex items-center justify-between">
-        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">
-          {{ isEditing ? 'Editar Rifa' : 'Nueva Rifa' }}
+        <h2 class="text-3xl font-black tracking-tighter uppercase text-white">
+          {{ isEditing ? 'Configurar' : 'Crear' }} <span class="text-indigo-400">Sorteo Digital</span>
         </h2>
-        <a routerLink="/raffles" class="text-sm font-medium text-gray-500 hover:text-gray-900 dark:hover:text-white transition-colors">
-          &larr; Volver
+        <a routerLink="/raffles" class="text-[10px] font-black uppercase tracking-widest text-slate-500 hover:text-white transition flex items-center gap-2">
+           <i class="fa-solid fa-arrow-left"></i> Retornar
         </a>
       </div>
 
-      <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
-        <form [formGroup]="raffleForm" (ngSubmit)="onSubmit()" class="space-y-6">
+      <div class="glass-card rounded-[2.5rem] p-10 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-64 h-64 bg-indigo-600/10 blur-3xl rounded-full pointer-events-none"></div>
+        
+        <form [formGroup]="raffleForm" (ngSubmit)="onSubmit()" class="space-y-8 relative z-10">
           
-           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+           <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
              <!-- Name -->
              <div class="md:col-span-2">
-                <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nombre de la Rifa</label>
-                <input id="name" formControlName="name" type="text" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 px-3 py-2 border">
+                <label for="name" class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Denominación Oficial</label>
+                <input id="name" formControlName="name" type="text" class="block w-full rounded-2xl bg-black/40 text-white placeholder-slate-600 focus:border-indigo-500 focus:ring-indigo-500 text-sm px-6 py-4 border border-white/10 outline-none transition-all">
              </div>
 
              <!-- Type -->
              <div>
-                <label for="type" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tipo de Rifa</label>
-                <select id="type" formControlName="type" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 px-3 py-2 border">
-                    <option value="product">Producto</option>
-                    <option value="money">Dinero</option>
+                <label for="type" class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Clase de Activo</label>
+                <select id="type" formControlName="type" class="block w-full rounded-2xl bg-black/80 text-white placeholder-slate-600 focus:border-indigo-500 focus:ring-indigo-500 text-sm px-6 py-4 border border-white/10 outline-none transition-all cursor-pointer">
+                    <option value="product">Bien Físico</option>
+                    <option value="money">Capital</option>
                 </select>
              </div>
 
              <!-- Prize Description -->
              <div class="md:col-span-1">
-                <label for="prize_description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Premio a Entregar</label>
-                <input id="prize_description" formControlName="prize_description" type="text" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 px-3 py-2 border">
+                <label for="prize_description" class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Garantía / Premio</label>
+                <input id="prize_description" formControlName="prize_description" type="text" class="block w-full rounded-2xl bg-black/40 text-white placeholder-slate-600 focus:border-indigo-500 focus:ring-indigo-500 text-sm px-6 py-4 border border-white/10 outline-none transition-all">
              </div>
 
              <!-- Description -->
              <div class="md:col-span-2">
-                <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Condiciones / Descripción Corta</label>
-                <textarea id="description" formControlName="description" rows="2" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 px-3 py-2 border"></textarea>
+                <label for="description" class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Condiciones Particulares</label>
+                <textarea id="description" formControlName="description" rows="3" class="block w-full rounded-2xl bg-black/40 text-white placeholder-slate-600 focus:border-indigo-500 focus:ring-indigo-500 text-sm px-6 py-4 border border-white/10 outline-none transition-all custom-scroll"></textarea>
              </div>
 
              <!-- Price (ticket_price) -->
              <div>
-                <label for="ticket_price" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Precio por Boleto ($)</label>
-                <input id="ticket_price" formControlName="ticket_price" type="number" min="0" step="0.01" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 px-3 py-2 border">
+                <label for="ticket_price" class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Cotización por Token ($)</label>
+                <input id="ticket_price" formControlName="ticket_price" type="number" min="0" step="0.01" class="block w-full rounded-2xl bg-black/40 text-white placeholder-slate-600 focus:border-indigo-500 focus:ring-indigo-500 text-sm px-6 py-4 border border-white/10 outline-none transition-all">
              </div>
 
              <!-- Total Tickets (number_to) -->
              <div>
-                <label for="number_to" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Cantidad Total de Boletos</label>
-                <input id="number_to" formControlName="number_to" type="number" min="1" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 px-3 py-2 border">
+                <label for="number_to" class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Volumen de Emisión</label>
+                <input id="number_to" formControlName="number_to" type="number" min="1" class="block w-full rounded-2xl bg-black/40 text-white placeholder-slate-600 focus:border-indigo-500 focus:ring-indigo-500 text-sm px-6 py-4 border border-white/10 outline-none transition-all">
              </div>
 
              <!-- End Date (draw_at) -->
-             <div>
-                <label for="draw_at" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Fecha Planificada del Sorteo</label>
-                <input id="draw_at" formControlName="draw_at" type="datetime-local" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 px-3 py-2 border">
+             <div class="md:col-span-2">
+                <label for="draw_at" class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Programación del Sorteo</label>
+                <input id="draw_at" formControlName="draw_at" type="datetime-local" class="block w-full rounded-2xl bg-black/40 text-white placeholder-slate-600 focus:border-indigo-500 focus:ring-indigo-500 text-sm px-6 py-4 border border-white/10 outline-none transition-all [color-scheme:dark]">
              </div>
 
              <!-- Image Path Upload -->
-             <div>
-                <label for="image_path" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Banner o Imagen Promocional</label>
+             <div class="md:col-span-2">
+                <label for="image_path" class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-4">Arte Promocional Oficial</label>
                 <!-- Thumbnail Preview -->
-                <div *ngIf="fullImageUrl && !selectedFile" class="mt-2 mb-3">
-                   <img [src]="fullImageUrl" alt="Vista previa de la Rifa" class="h-32 object-contain rounded-md border border-gray-200 dark:border-gray-600 shadow-sm" />
-                   <p class="text-xs text-gray-400 mt-1">Imagen actual registrada.</p>
+                <div *ngIf="fullImageUrl && !selectedFile" class="mt-2 mb-6 p-4 rounded-3xl border border-white/10 bg-black/20 text-center relative max-w-sm mx-auto overflow-hidden">
+                   <div class="absolute inset-0 bg-indigo-500/5 z-0"></div>
+                   <img [src]="fullImageUrl" alt="Vista previa de la Rifa" class="h-40 object-contain rounded-xl shadow-2xl relative z-10 mx-auto" />
                 </div>
-                <input id="image_path" type="file" (change)="onFileSelected($event)" accept="image/png, image/jpeg, image/jpg, image/webp" class="mt-1 block w-full text-sm text-gray-500 dark:text-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100">
+                <div class="relative w-full">
+                     <input id="image_path" type="file" (change)="onFileSelected($event)" accept="image/png, image/jpeg, image/jpg, image/webp" 
+                       class="block w-full text-sm text-slate-400 file:mr-4 file:py-3 file:px-6 file:rounded-2xl file:border-0 file:text-[10px] file:font-black file:uppercase file:tracking-widest file:bg-white/10 file:text-white hover:file:bg-indigo-500 file:transition-all file:cursor-pointer cursor-pointer border border-white/5 rounded-2xl bg-black/20 p-2">
+                </div>
              </div>
-          </div>
+           </div>
 
-          <div *ngIf="successMessage" class="rounded-md bg-green-50 dark:bg-green-900/30 p-4 border border-green-200 dark:border-green-800 mb-4">
-             <div class="text-sm text-green-700 dark:text-green-400 font-medium">{{ successMessage }}</div>
-          </div>
+           <div *ngIf="successMessage" class="rounded-2xl bg-emerald-500/10 p-6 border border-emerald-500/30">
+             <div class="text-[10px] text-emerald-400 font-black tracking-widest uppercase"><i class="fa-solid fa-check-circle mr-2"></i> {{ successMessage }}</div>
+           </div>
 
-          <div *ngIf="errorMessage" class="rounded-md bg-red-50 dark:bg-red-900/30 p-4 border border-red-200 dark:border-red-800 mb-4">
-             <div class="text-sm text-red-700 dark:text-red-400 whitespace-pre-wrap">{{ errorMessage }}</div>
-          </div>
+           <div *ngIf="errorMessage" class="rounded-2xl bg-red-500/10 p-6 border border-red-500/30">
+             <div class="text-xs font-bold text-red-400 whitespace-pre-wrap"><i class="fa-solid fa-triangle-exclamation mr-2"></i> {{ errorMessage }}</div>
+           </div>
 
-          <div class="flex justify-end pt-4">
-             <button type="submit" [disabled]="raffleForm.invalid || isSaving" class="inline-flex justify-center px-6 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50 transition-colors">
-               {{ isSaving ? 'Guardando...' : (isEditing ? 'Actualizar Rifa' : 'Crear Rifa') }}
-             </button>
-          </div>
+           <div class="flex justify-end pt-8 border-t border-white/10">
+              <button type="submit" [disabled]="raffleForm.invalid || isSaving" class="inline-flex justify-center items-center px-10 py-5 btn-premium shadow-xl rounded-2xl text-white font-black text-xs uppercase tracking-widest disabled:opacity-50 transition-all">
+                <i *ngIf="!isSaving" class="fa-solid fa-floppy-disk mr-3 text-lg"></i>
+                <svg *ngIf="isSaving" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                {{ isSaving ? 'Guardando Registro...' : (isEditing ? 'Sellar Cambios' : 'Acuñar Oficialmente') }}
+              </button>
+           </div>
 
         </form>
       </div>
@@ -210,7 +217,7 @@ export class RaffleFormComponent implements OnInit {
         this.isSaving = false;
         // Transformar Laravel Validation Error a un mensaje legible
         if (err.error?.errors) {
-            const errs = Object.values(err.error.errors).flat().join('\n');
+            const errs = Object.values(err.error.errors).flat().join('\\n');
             this.errorMessage = errs;
         } else {
             this.errorMessage = err.error?.message || err.message || 'Error grave al comunicarse con el servidor.';

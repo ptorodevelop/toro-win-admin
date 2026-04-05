@@ -22,16 +22,19 @@ export class AuthService {
     const token = localStorage.getItem('token');
     const userString = localStorage.getItem('user');
     
-    if (token && userString && userString !== 'undefined') {
-      try {
-        this.userSubject.next(JSON.parse(userString));
-      } catch (e) {
-        console.error('Error parsing user from localStorage:', e);
-        this.logout();
+    if (token) {
+      if (userString && userString !== 'undefined') {
+        try {
+          this.userSubject.next(JSON.parse(userString));
+        } catch (e) {
+          console.error('Error parsing user from localStorage:', e);
+        }
       }
+      // If there is a token, the user is authenticated. 
+      // Do not logout just because the user info is missing.
     } else {
-      // Clean up any potential corrupted state
-      if (token || userString) {
+      // Clean up any potential corrupted state if token is missing
+      if (userString) {
         this.logout();
       }
     }

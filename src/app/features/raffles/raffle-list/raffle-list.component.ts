@@ -9,88 +9,76 @@ import { Raffle } from '../../../core/models/raffle.interface';
   standalone: true,
   imports: [CommonModule, RouterLink, CurrencyPipe, DatePipe],
   template: `
-    <div class="space-y-6">
+    <div class="space-y-8">
       <div class="flex items-center justify-between">
-        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Lista de Rifas</h2>
-        <a routerLink="/raffles/new" class="bg-primary-600 hover:bg-primary-700 text-white font-medium py-2 px-4 rounded-lg transition-colors">
-          + Nueva Rifa
+        <h2 class="text-3xl font-black tracking-tighter uppercase text-slate-100">Catálogo de <span class="text-indigo-400">Sobres</span></h2>
+        <a routerLink="/raffles/new" class="btn-premium text-white font-black text-[10px] uppercase tracking-widest py-3 px-6 rounded-2xl transition-all flex items-center gap-2">
+          <i class="fa-solid fa-plus"></i> Nueva Colección
         </a>
       </div>
 
-      <div class="bg-white dark:bg-gray-800 shadow rounded-lg overflow-hidden">
-        <div *ngIf="isLoading" class="p-6 flex justify-center">
-           <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
+      <div class="glass-card rounded-[2rem] overflow-hidden border border-white/10">
+        <div *ngIf="isLoading" class="p-20 flex justify-center">
+           <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-indigo-500"></div>
         </div>
 
-        <table *ngIf="!isLoading && raffles.length > 0" class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-          <thead class="bg-gray-50 dark:bg-gray-700">
-            <tr>
-              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                Rifa
-              </th>
-              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                Boletos
-              </th>
-              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                Precio
-              </th>
-              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                Estado
-              </th>
-              <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                Acciones
-              </th>
-            </tr>
-          </thead>
-          <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-            <tr *ngFor="let r of raffles" class="hover:bg-gray-50 dark:hover:bg-gray-750 transition-colors">
-              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
-                 <div class="flex flex-col">
-                   <span>{{ r.name }}</span>
-                   <span class="text-xs text-gray-400 font-normal">Sorteo: {{ r.draw_at | date }}</span>
-                 </div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                {{ r.number_to }}
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                {{ r.ticket_price | currency }}
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                <span [ngClass]="{
-                  'bg-green-100 text-green-800': r.status === 'active',
-                  'bg-gray-100 text-gray-800': r.status !== 'active'
-                }" class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full uppercase tracking-wide">
-                  {{ r.status || 'Active' }}
-                </span>
-                <span *ngIf="r.winner_ticket" class="ml-2 text-xs font-bold text-primary-600 block sm:inline mt-1 sm:mt-0">
-                  🏆 {{ r.winner_ticket }}
-                </span>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-3">
-                <a [routerLink]="['/raffles', r.id]" class="text-primary-600 hover:text-primary-900 dark:text-primary-400 dark:hover:text-primary-300">
-                   Panel
-                </a>
-                <a [routerLink]="['/raffles', r.id, 'edit']" class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300">
-                   Editar
-                </a>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="overflow-x-auto custom-scroll">
+          <table *ngIf="!isLoading && raffles.length > 0" class="min-w-full divide-y divide-white/5">
+            <thead class="bg-black/20">
+              <tr>
+                <th scope="col" class="px-8 py-5 text-left text-[10px] font-black text-slate-400 uppercase tracking-widest">Colección</th>
+                <th scope="col" class="px-8 py-5 text-left text-[10px] font-black text-slate-400 uppercase tracking-widest">Oferta (Tokens)</th>
+                <th scope="col" class="px-8 py-5 text-left text-[10px] font-black text-slate-400 uppercase tracking-widest">Valor Uni.</th>
+                <th scope="col" class="px-8 py-5 text-left text-[10px] font-black text-slate-400 uppercase tracking-widest">Estado</th>
+                <th scope="col" class="px-8 py-5 text-right text-[10px] font-black text-slate-400 uppercase tracking-widest">Acciones</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-white/5">
+              <tr *ngFor="let r of raffles" class="hover:bg-white/5 transition-colors group">
+                <td class="px-8 py-6 whitespace-nowrap">
+                   <div class="flex flex-col">
+                     <span class="text-base font-black text-white tracking-tight">{{ r.name }}</span>
+                     <span class="text-[10px] text-slate-500 font-bold uppercase tracking-widest mt-1">Sorteo: {{ r.draw_at | date }}</span>
+                   </div>
+                </td>
+                <td class="px-8 py-6 whitespace-nowrap text-sm font-bold text-slate-300">
+                  {{ r.number_to }} IDs
+                </td>
+                <td class="px-8 py-6 whitespace-nowrap text-sm font-bold text-yellow-500">
+                  {{ r.ticket_price | currency }}
+                </td>
+                <td class="px-8 py-6 whitespace-nowrap">
+                  <span [ngClass]="{
+                    'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30': r.status === 'active',
+                    'bg-slate-800 text-slate-400 border border-slate-700': r.status !== 'active'
+                  }" class="px-3 py-1 inline-flex text-[9px] font-black rounded-full uppercase tracking-widest">
+                    {{ r.status || 'Active' }}
+                  </span>
+                  <span *ngIf="r.winner_ticket" class="ml-3 text-[10px] font-black text-yellow-500 uppercase tracking-widest inline-flex items-center gap-1">
+                    <i class="fa-solid fa-crown"></i> {{ r.winner_ticket }}
+                  </span>
+                </td>
+                <td class="px-8 py-6 whitespace-nowrap text-right text-xs font-black uppercase tracking-widest space-x-4">
+                  <a [routerLink]="['/raffles', r.id]" class="text-indigo-400 hover:text-indigo-300 transition-colors">
+                     Panel
+                  </a>
+                  <a [routerLink]="['/raffles', r.id, 'edit']" class="text-slate-400 hover:text-white transition-colors">
+                     Ajustes
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
         <!-- Empty State -->
-        <div *ngIf="!isLoading && raffles.length === 0" class="p-12 text-center">
-           <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-           </svg>
-           <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-white">No hay Rifas</h3>
-           <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Comienza creando tu primera Rifa.</p>
-           <div class="mt-6">
-              <a routerLink="/raffles/new" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700">
-                 + Nueva Rifa
-              </a>
-           </div>
+        <div *ngIf="!isLoading && raffles.length === 0" class="p-20 text-center">
+           <div class="w-16 h-16 bg-slate-800 rounded-2xl flex items-center justify-center text-slate-500 mx-auto mb-6 text-2xl"><i class="fa-solid fa-folder-open"></i></div>
+           <h3 class="mt-2 text-xl font-black text-white tracking-tight">Catálogo Vacío</h3>
+           <p class="mt-2 text-sm text-slate-400 font-light mb-8">Comienza acuñando tu primera colección de activos.</p>
+           <a routerLink="/raffles/new" class="inline-flex items-center gap-2 px-8 py-4 btn-premium text-white font-black text-xs uppercase tracking-widest rounded-2xl">
+              <i class="fa-solid fa-plus"></i> Nueva Colección
+           </a>
         </div>
 
       </div>
