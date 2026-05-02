@@ -22,6 +22,9 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
         <a routerLink="/raffles" routerLinkActive="bg-white/10 text-white font-bold border-indigo-500" class="flex items-center gap-3 py-3 px-4 rounded-xl text-sm font-medium text-slate-400 hover:text-white hover:bg-white/5 border border-transparent transition-all">
           <i class="fa-solid fa-ticket"></i> Catálogo de Sobres
         </a>
+        <a routerLink="/partners" routerLinkActive="bg-white/10 text-white font-bold border-indigo-500" class="flex items-center gap-3 py-3 px-4 rounded-xl text-sm font-medium text-slate-400 hover:text-white hover:bg-white/5 border border-transparent transition-all">
+          <i class="fa-solid fa-handshake"></i> Partners/Afiliados
+        </a>
       </nav>
       <div class="p-6 border-t border-white/5 text-center">
         <p class="text-[9px] font-black uppercase tracking-widest text-slate-500">© 2026 Sobre de Fortuna Digital Premium</p>

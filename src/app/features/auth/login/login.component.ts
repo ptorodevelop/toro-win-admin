@@ -21,7 +21,7 @@ import { AuthService } from '../../../core/services/auth.service';
           <h2 class="mt-2 text-center text-4xl font-black tracking-tighter text-white uppercase">
             Acceso <span class="text-indigo-400">Premium</span>
           </h2>
-          <p class="mt-4 text-center text-xs font-bold uppercase tracking-widest text-slate-500">
+          <p class="mt-4 text-center text-xs font-bold uppercase tracking-widest text-transparent bg-clip-text" style="background-image: var(--gold-gradient)">
           Sobre de Fortuna Digital
           </p>
         </div>
@@ -67,7 +67,7 @@ import { AuthService } from '../../../core/services/auth.service';
       
       <!-- Footer estético -->
       <div class="absolute bottom-6 w-full text-center pointer-events-none">
-         <p class="text-[9px] font-black uppercase tracking-widest text-slate-600">© 2026 Plataforma ToroWin Premium</p>
+         <p class="text-[9px] font-black uppercase tracking-widest text-slate-600">© 2026 Plataforma Sobre de Fortuna Digital</p>
       </div>
     </div>
   `

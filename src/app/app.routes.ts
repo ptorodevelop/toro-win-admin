@@ -19,7 +19,11 @@ export const routes: Routes = [
       { path: 'raffles', component: RaffleListComponent },
       { path: 'raffles/new', component: RaffleFormComponent },
       { path: 'raffles/:id', component: RaffleDetailComponent },
-      { path: 'raffles/:id/edit', component: RaffleFormComponent }
+      { path: 'raffles/:id/edit', component: RaffleFormComponent },
+      { 
+        path: 'partners', 
+        loadComponent: () => import('./features/partners/pages/partner-list/partner-list.component').then(m => m.PartnerListComponent) 
+      }
     ]
   },
   { path: '**', redirectTo: '' }
