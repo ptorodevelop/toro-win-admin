@@ -1,0 +1,75 @@
+<div class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+  <div class="glass-card rounded-[2.5rem] w-full max-w-xl shadow-2xl relative overflow-hidden flex flex-col max-h-[90vh] border border-white/10 bg-[#0f172a]">
+    <div class="absolute top-0 right-0 w-64 h-64 bg-indigo-600/10 blur-3xl rounded-full pointer-events-none"></div>
+
+    <div class="px-10 py-8 border-b border-white/10 flex items-center justify-between relative z-10">
+      <div>
+        <h2 class="text-2xl font-black tracking-tighter uppercase text-white">{{ partner ? 'Editar' : 'Nuevo' }} <span class="text-indigo-400">Partner</span></h2>
+        <p class="text-[10px] font-black uppercase tracking-widest text-slate-400 mt-2">{{ partner ? 'Modifica los datos y comisión' : 'Crea un nuevo promotor para tus rifas' }}</p>
+      </div>
+      <button (click)="close.emit(false)" class="w-10 h-10 flex items-center justify-center rounded-2xl bg-white/5 text-slate-400 hover:bg-white/10 hover:text-white transition-all border border-white/5">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <div class="p-10 overflow-y-auto custom-scroll relative z-10">
+      <form [formGroup]="form" class="space-y-8">
+        <div>
+          <label class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Nombre Oficial *</label>
+          <input type="text" formControlName="name" class="block w-full rounded-2xl bg-black/40 text-white placeholder-slate-600 focus:border-indigo-500 focus:ring-indigo-500 text-sm px-6 py-4 border border-white/10 outline-none transition-all" placeholder="Nombre completo">
+        </div>
+
+        <div class="grid grid-cols-2 gap-6">
+          <div>
+            <label class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Documento</label>
+            <input type="text" formControlName="document" class="block w-full rounded-2xl bg-black/40 text-white placeholder-slate-600 focus:border-indigo-500 focus:ring-indigo-500 text-sm px-6 py-4 border border-white/10 outline-none transition-all" placeholder="Opcional">
+          </div>
+          <div>
+            <label class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Teléfono</label>
+            <input type="text" formControlName="phone" class="block w-full rounded-2xl bg-black/40 text-white placeholder-slate-600 focus:border-indigo-500 focus:ring-indigo-500 text-sm px-6 py-4 border border-white/10 outline-none transition-all" placeholder="Opcional">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Código Referido <span *ngIf="!partner" class="text-slate-600 font-normal lowercase">(Opcional)</span></label>
+          <div class="flex">
+            <span class="inline-flex items-center px-6 py-4 rounded-l-2xl border border-r-0 border-white/10 bg-black/60 text-slate-500 text-xs font-black tracking-widest">
+              ?ref=
+            </span>
+            <input type="text" formControlName="code" class="block w-full rounded-r-2xl bg-black/40 text-white placeholder-slate-600 focus:border-indigo-500 focus:ring-indigo-500 text-sm px-6 py-4 border border-white/10 border-l-0 outline-none transition-all" placeholder="EJ: VIP2026">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-6">
+          <div>
+            <label class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Plan de Comisión *</label>
+            <select formControlName="commission_type" class="block w-full rounded-2xl bg-black/80 text-white placeholder-slate-600 focus:border-indigo-500 focus:ring-indigo-500 text-sm px-6 py-4 border border-white/10 outline-none transition-all cursor-pointer">
+              <option value="percentage">Porcentaje (%)</option>
+              <option value="fixed">Fija ($)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Valor Asignado *</label>
+            <input type="number" formControlName="commission_value" class="block w-full rounded-2xl bg-black/40 text-white placeholder-slate-600 focus:border-indigo-500 focus:ring-indigo-500 text-sm px-6 py-4 border border-white/10 outline-none transition-all">
+          </div>
+        </div>
+
+        <div class="flex items-center gap-4 bg-black/20 p-5 rounded-2xl border border-white/5">
+          <input type="checkbox" formControlName="is_active" id="active" class="w-5 h-5 rounded border-white/10 bg-black text-indigo-500 focus:ring-indigo-500 focus:ring-offset-slate-900 cursor-pointer">
+          <label for="active" class="text-[10px] font-black uppercase tracking-widest text-slate-300 cursor-pointer pt-0.5">Partner Activo (Puede enlazar ventas)</label>
+        </div>
+      </form>
+    </div>
+
+    <div class="px-10 py-8 border-t border-white/10 bg-black/20 flex justify-end gap-4 relative z-10">
+      <button (click)="close.emit(false)" type="button" class="px-6 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-white hover:bg-white/5 transition-all">
+        Cancelar
+      </button>
+      <button (click)="save()" [disabled]="isSubmitting" class="btn-premium text-white font-black text-[10px] uppercase tracking-widest py-3 px-8 rounded-2xl transition-all shadow-xl flex items-center gap-3 disabled:opacity-50">
+        <i class="fa-solid fa-spinner fa-spin" *ngIf="isSubmitting"></i>
+        <i class="fa-solid fa-floppy-disk" *ngIf="!isSubmitting"></i>
+        {{ isSubmitting ? 'Guardando...' : 'Confirmar' }}
+      </button>
+    </div>
+  </div>
+</div>

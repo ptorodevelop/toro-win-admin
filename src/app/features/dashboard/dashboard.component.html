@@ -1,0 +1,130 @@
+<div class="space-y-8">
+  <div class="flex items-center justify-between">
+    <h2 class="text-3xl font-black tracking-tighter uppercase text-slate-100">Vista <span class="text-indigo-400">General</span></h2>
+    <a routerLink="/raffles" class="text-[10px] font-black uppercase tracking-widest text-indigo-400 hover:text-indigo-300 transition flex items-center gap-2">Ver todas <i class="fa-solid fa-arrow-right"></i></a>
+  </div>
+
+  <div class="grid grid-cols-1 gap-8">
+    <!-- Welcome Widget -->
+    <div class="glass-card rounded-[2rem] p-10 relative overflow-hidden group">
+      <div class="absolute -top-32 -right-32 w-64 h-64 bg-indigo-600/30 blur-3xl rounded-full"></div>
+      <h3 class="text-4xl md:text-5xl font-black mb-4 tracking-tighter text-white">Sobre de Fortuna <span class="text-transparent bg-clip-text" style="background-image: var(--gold-gradient)">Digital</span></h3>
+      <p class="text-slate-400 text-sm md:text-base font-light max-w-2xl">Gestiona tus colecciones, supervisa los activos digitales y decide el destino de la Fortuna. El éxito es tu decisión.</p>
+    </div>
+
+    <!-- Loader -->
+    <div *ngIf="isLoading" class="py-20 flex justify-center">
+      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-500"></div>
+    </div>
+
+    <ng-container *ngIf="!isLoading">
+
+      <!-- Tabs Navigation -->
+      <div class="flex space-x-4 border-b border-white/10 pb-2">
+        <button (click)="switchTab('analytics')"
+          [class.text-white]="selectedTab === 'analytics'" [class.border-b-indigo-500]="selectedTab === 'analytics'"
+          [class.text-slate-500]="selectedTab !== 'analytics'" [class.border-b-transparent]="selectedTab !== 'analytics'"
+          class="pb-2 border-b-2 font-black tracking-widest text-[10px] uppercase transition-all px-4 hover:text-white flex items-center gap-2">
+          <i class="fa-solid fa-chart-pie"></i> Promoción Activa
+        </button>
+        <button (click)="switchTab('catalog')"
+          [class.text-white]="selectedTab === 'catalog'" [class.border-b-indigo-500]="selectedTab === 'catalog'"
+          [class.text-slate-500]="selectedTab !== 'catalog'" [class.border-b-transparent]="selectedTab !== 'catalog'"
+          class="pb-2 border-b-2 font-black tracking-widest text-[10px] uppercase transition-all px-4 hover:text-white flex items-center gap-2">
+          <i class="fa-solid fa-folder-open"></i> Activos Recientes
+        </button>
+      </div>
+
+      <!-- Tab 1: Analytics -->
+      <div *ngIf="selectedTab === 'analytics'" class="space-y-8 animate-fade-in">
+        <div *ngIf="!activeRaffleStats" class="text-center py-24 glass-card rounded-[3rem] border border-dashed border-white/20">
+          <div class="w-16 h-16 bg-slate-800 rounded-2xl flex items-center justify-center text-slate-500 mx-auto mb-6 text-2xl"><i class="fa-solid fa-ban"></i></div>
+          <p class="text-slate-400 mb-8 font-light text-lg">No hay una asignación activa en este momento para analizar.</p>
+        </div>
+
+        <div *ngIf="activeRaffleStats" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+          <!-- ── Gráfico Ingresos ──────────────────────────────────── -->
+          <div class="glass-card rounded-[2rem] p-8 flex flex-col items-center gap-4 relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-48 h-48 bg-yellow-500/5 blur-3xl rounded-full pointer-events-none"></div>
+            <div class="text-center">
+              <h3 class="text-white font-black tracking-widest text-[10px] uppercase">Rendimiento Financiero</h3>
+              <p class="text-slate-500 text-[10px] mt-1">Recaudado vs Meta <span class="text-yellow-500/70 font-black">(precio × boletas)</span></p>
+            </div>
+            <div class="relative w-48 h-48 flex-shrink-0">
+              <canvas #revenueChart></canvas>
+              <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                <span class="text-[8px] font-black text-slate-400 tracking-widest uppercase">Recaudado</span>
+                <span class="text-lg font-black leading-tight" style="background-image: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">{{ revenuePercent }}%</span>
+                <span class="text-[8px] text-yellow-600 font-black mt-0.5">{{ activeRaffleStats?.revenue_total | currency:'COP':'symbol':'1.0-0' }}</span>
+              </div>
+            </div>
+            <div class="flex items-center gap-4 text-[9px] font-black uppercase tracking-widest">
+              <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-yellow-500 inline-block"></span> Recaudado</span>
+              <span class="flex items-center gap-1.5 text-slate-500"><span class="w-2.5 h-2.5 rounded-full bg-slate-700 inline-block"></span> Pendiente</span>
+            </div>
+          </div>
+
+          <!-- ── Gráfico Tickets ───────────────────────────────────── -->
+          <div class="glass-card rounded-[2rem] p-8 flex flex-col items-center gap-4 relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-48 h-48 bg-indigo-500/5 blur-3xl rounded-full pointer-events-none"></div>
+            <div class="text-center">
+              <h3 class="text-white font-black tracking-widest text-[10px] uppercase">Volumen de Emisión</h3>
+              <p class="text-slate-500 text-[10px] mt-1">Vendidos · Reservados · Disponibles</p>
+            </div>
+            <div class="relative w-48 h-48 flex-shrink-0">
+              <canvas #ticketsChart></canvas>
+              <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                <span class="text-[8px] font-black text-slate-400 tracking-widest uppercase">Vendidos</span>
+                <span class="text-2xl font-black text-indigo-400 leading-tight">{{ activeRaffleStats?.tickets_sold }}</span>
+                <span class="text-[8px] text-slate-500 font-bold mt-0.5">/ {{ activeRaffleStats?.tickets_total }}</span>
+              </div>
+            </div>
+            <div class="flex items-center gap-4 text-[9px] font-black uppercase tracking-widest flex-wrap justify-center">
+              <span class="flex items-center gap-1.5 text-indigo-400"><span class="w-2.5 h-2.5 rounded-full bg-indigo-500 inline-block"></span> Vendidos</span>
+              <span class="flex items-center gap-1.5 text-yellow-500"><span class="w-2.5 h-2.5 rounded-full bg-yellow-500 inline-block"></span> Reservados</span>
+              <span class="flex items-center gap-1.5 text-slate-500"><span class="w-2.5 h-2.5 rounded-full bg-slate-700 inline-block"></span> Disponibles</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Tab 2: Catalog -->
+      <div *ngIf="selectedTab === 'catalog'" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 animate-fade-in">
+        <div *ngFor="let raf of recentRaffles" class="glass-card rounded-3xl p-8 flex flex-col justify-between group hover:-translate-y-2 transition-transform duration-500 relative overflow-hidden">
+          <div class="absolute top-0 right-0 w-32 h-32 bg-indigo-500/10 rounded-bl-[100px] -z-10 group-hover:bg-indigo-500/20 transition-colors"></div>
+          <div class="z-10">
+            <div class="flex items-center justify-between mb-6">
+              <span [ngClass]="{
+                'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30': raf.status === 'active',
+                'bg-slate-800 text-slate-400 border border-slate-700': raf.status !== 'active'
+              }" class="px-3 py-1 text-[9px] font-black uppercase tracking-widest rounded-full">
+                {{ raf.status || 'Active' }}
+              </span>
+              <span class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">ID-{{ raf.id | number:'3.0-0' }}</span>
+            </div>
+            <h3 class="text-2xl font-black text-white mb-4 tracking-tight leading-none">{{ raf.name }}</h3>
+            <div class="space-y-2 mb-6">
+              <p class="text-xs text-slate-400 uppercase tracking-widest font-bold flex justify-between">Volumen <span class="text-white">{{ raf.number_to }} IDs</span></p>
+              <p class="text-xs text-slate-400 uppercase tracking-widest font-bold flex justify-between">Valor  <span class="text-yellow-500">{{ raf.ticket_price | currency }}</span></p>
+            </div>
+            <div *ngIf="raf.winner_ticket" class="mt-4 inline-block bg-yellow-500/10 border border-yellow-500/30 text-yellow-500 px-4 py-2 rounded-xl text-sm font-black tracking-widest">
+              <i class="fa-solid fa-crown mr-2"></i> {{ raf.winner_ticket }}
+            </div>
+          </div>
+          <a [routerLink]="['/raffles', raf.id]" class="mt-8 w-full py-4 glass-nav text-center text-white border border-white/10 hover:bg-white/10 rounded-2xl transition-all text-xs font-black uppercase tracking-widest z-10">
+            Ingresar a Bóveda
+          </a>
+        </div>
+
+        <div *ngIf="recentRaffles.length === 0" class="col-span-full text-center py-24 glass-card rounded-[3rem] border border-dashed border-white/20">
+          <div class="w-16 h-16 bg-slate-800 rounded-2xl flex items-center justify-center text-slate-500 mx-auto mb-6 text-2xl"><i class="fa-solid fa-folder-open"></i></div>
+          <p class="text-slate-400 mb-8 font-light text-lg">Su bóveda está completamente vacía.</p>
+          <a routerLink="/raffles/new" class="inline-flex items-center px-8 py-4 btn-premium text-white rounded-2xl font-black text-xs uppercase tracking-widest">Acuñar primer activo</a>
+        </div>
+      </div>
+
+    </ng-container>
+  </div>
+</div>

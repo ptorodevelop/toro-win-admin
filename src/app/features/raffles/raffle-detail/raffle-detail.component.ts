@@ -33,7 +33,7 @@ import { RaffleStats } from '../../../core/models/raffle-stats.interface';
       </div>
 
       <!-- Stats Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
         <!-- Revenue Card -->
         <div class="glass-card rounded-[2rem] p-8 border-t-2 border-t-yellow-500">
            <h3 class="text-slate-400 text-[10px] font-black uppercase tracking-widest mb-2">Recaudación</h3>
@@ -43,9 +43,16 @@ import { RaffleStats } from '../../../core/models/raffle-stats.interface';
         </div>
         <!-- Sold Cards -->
         <div class="glass-card rounded-[2rem] p-8 border-t-2 border-t-indigo-500">
-           <h3 class="text-slate-400 text-[10px] font-black uppercase tracking-widest mb-2">Tokens Generados</h3>
+           <h3 class="text-slate-400 text-[10px] font-black uppercase tracking-widest mb-2">Tokens Vendidos</h3>
            <p class="text-3xl font-black text-white tracking-tighter">
              {{ stats?.tickets_sold }} <span class="text-sm text-slate-500 font-light tracking-normal">/ {{ stats?.tickets_total || raffle.number_to }}</span>
+           </p>
+        </div>
+        <!-- Reserved Cards -->
+        <div class="glass-card rounded-[2rem] p-8 border-t-2 border-t-sky-500">
+           <h3 class="text-slate-400 text-[10px] font-black uppercase tracking-widest mb-2">Tokens Reservados</h3>
+           <p class="text-3xl font-black text-white tracking-tighter">
+             {{ stats?.tickets_reserved || 0 }}
            </p>
         </div>
         <!-- Available -->
@@ -57,7 +64,7 @@ import { RaffleStats } from '../../../core/models/raffle-stats.interface';
         </div>
         <!-- Progress -->
         <div class="glass-card rounded-[2rem] p-8 border-t-2 border-t-purple-500">
-           <h3 class="text-slate-400 text-[10px] font-black uppercase tracking-widest mb-2">Penetración</h3>
+           <h3 class="text-slate-400 text-[10px] font-black uppercase tracking-widest mb-2">Progreso de Ventas</h3>
            <p class="text-3xl font-black text-white tracking-tighter">
              {{ stats?.percentage_sold! / 100 | percent:'1.1-2' }}
            </p>

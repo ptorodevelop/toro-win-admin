@@ -1,0 +1,93 @@
+<div class="space-y-8">
+  <div class="flex items-center justify-between">
+    <div>
+      <h2 class="text-3xl font-black tracking-tighter uppercase text-slate-100">Panel de <span class="text-indigo-400">Afiliados</span></h2>
+      <p class="text-slate-400 text-sm font-medium mt-2">Administra los promotores y sus comisiones generadas.</p>
+    </div>
+    <div class="flex items-center gap-4">
+      <div class="flex items-center gap-2 bg-white/5 px-4 py-2.5 rounded-2xl border border-white/10">
+        <i class="fa-solid fa-filter text-slate-400 text-xs"></i>
+        <select [(ngModel)]="selectedRaffle" (change)="onRaffleChange()" class="bg-transparent border-none text-xs font-black text-slate-300 uppercase tracking-widest focus:ring-0 outline-none w-48">
+          <option value="" class="bg-slate-900">Todas las rifas (Global)</option>
+          <option *ngFor="let r of raffles" [value]="r.id" class="bg-slate-900">{{ r.name }}</option>
+        </select>
+      </div>
+      <button (click)="openModal()" class="btn-premium text-white font-black text-[10px] uppercase tracking-widest py-3.5 px-6 rounded-2xl transition-all flex items-center gap-2">
+        <i class="fa-solid fa-plus"></i> Nuevo Partner
+      </button>
+    </div>
+  </div>
+
+  <div class="glass-card rounded-[2rem] overflow-hidden border border-white/10">
+    <div class="overflow-x-auto custom-scroll">
+      <table class="min-w-full divide-y divide-white/5 text-left">
+        <thead class="bg-black/20">
+          <tr>
+            <th class="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest">Partner</th>
+            <th class="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest">Código / URL</th>
+            <th class="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest">Comisión Config.</th>
+            <th class="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest">Ventas (COP)</th>
+            <th class="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest">Comisión a Pagar</th>
+            <th class="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest">Estado</th>
+            <th class="px-8 py-5 text-right text-[10px] font-black text-slate-400 uppercase tracking-widest">Acciones</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-white/5">
+          <tr *ngFor="let p of partners" class="hover:bg-white/5 transition-colors group">
+            <td class="px-8 py-6 whitespace-nowrap">
+              <div class="flex items-center gap-4">
+                <div class="w-10 h-10 rounded-xl bg-indigo-500/20 border border-indigo-500/30 flex items-center justify-center text-indigo-400 font-black shadow-lg">
+                  {{ p.name.charAt(0) | uppercase }}
+                </div>
+                <div>
+                  <p class="font-black text-white tracking-tight">{{ p.name }}</p>
+                  <p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest mt-1">{{ p.document || 'Sin doc' }} - {{ p.phone || 'Sin tel' }}</p>
+                </div>
+              </div>
+            </td>
+            <td class="px-8 py-6 whitespace-nowrap">
+              <span class="inline-flex items-center px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs font-black text-indigo-300 font-mono">
+                ?ref={{ p.code }}
+              </span>
+            </td>
+            <td class="px-8 py-6 whitespace-nowrap">
+              <span class="text-sm font-black text-slate-300">
+                {{ p.commission_type === 'percentage' ? p.commission_value + '%' : '$' + (p.commission_value | number) }}
+              </span>
+            </td>
+            <td class="px-8 py-6 whitespace-nowrap">
+              <div class="flex flex-col">
+                <span class="font-black text-yellow-500 text-base">$ {{ (p.total_sales_amount || 0) | number }}</span>
+                <span class="text-[9px] text-slate-400 font-black uppercase tracking-widest mt-1">{{ p.total_orders || 0 }} órdenes</span>
+              </div>
+            </td>
+            <td class="px-8 py-6 whitespace-nowrap">
+              <span class="font-black text-emerald-400 text-lg tracking-tight">
+                $ {{ calculateCommission(p) | number }}
+              </span>
+            </td>
+            <td class="px-8 py-6 whitespace-nowrap">
+              <span [ngClass]="p.is_active ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-rose-500/20 text-rose-400 border border-rose-500/30'" class="px-3 py-1 inline-flex text-[9px] font-black rounded-full uppercase tracking-widest">
+                {{ p.is_active ? 'Activo' : 'Inactivo' }}
+              </span>
+            </td>
+            <td class="px-8 py-6 whitespace-nowrap text-right space-x-3">
+              <button (click)="openModal(p)" class="text-slate-400 hover:text-yellow-500 transition-colors">
+                <i class="fa-solid fa-pen-to-square"></i> Editar
+              </button>
+            </td>
+          </tr>
+          <tr *ngIf="partners.length === 0">
+            <td colspan="7" class="p-20 text-center">
+              <div class="w-16 h-16 bg-slate-800 rounded-2xl flex items-center justify-center text-slate-500 mx-auto mb-6 text-2xl"><i class="fa-solid fa-users-slash"></i></div>
+              <h3 class="mt-2 text-xl font-black text-white tracking-tight">Sin Partners Registrados</h3>
+              <p class="mt-2 text-sm text-slate-400 font-light mb-8">Comienza a agregar promotores a tus rifas.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<app-partner-form-modal *ngIf="isModalOpen" [partner]="selectedPartner" (close)="closeModal($event)"></app-partner-form-modal>
